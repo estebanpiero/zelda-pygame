@@ -13,16 +13,15 @@ pygame.display.set_caption("Zelda Style Game")
 clock = pygame.time.Clock()
 
 # Load the Map
-map = TileMap('assets/maps/map.tmx')
-map_img = map.make_map()
-map_rect = map_img.get_rect()
+tilemap = TileMap('assets/maps/map.tmx')
+
 
 # Create player instance
 player = Player((WIDTH // 2, HEIGHT // 2))
 
 # Sprite group to update/draw everything
-all_sprites = CameraGroup()
-all_sprites.add(player)
+camera_group = CameraGroup(tilemap)
+camera_group.add(player)
 
 # Main loop
 running = True
@@ -33,11 +32,11 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    all_sprites.update()
+    camera_group.update()
 
     # Draw everything
-    screen.blit(map_img,map_rect)
-    all_sprites.custom_draw(player)
+    
+    camera_group.custom_draw(player)
 
     #screen.fill((30, 30, 30))  # Dark gray background
     #all_sprites.draw(screen)
