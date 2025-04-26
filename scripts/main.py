@@ -32,7 +32,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    all_sprites.update(keys)
+    all_sprites.update()
 
     # Draw everything
     screen.blit(map_img,map_rect)
