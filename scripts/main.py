@@ -1,6 +1,7 @@
 import pygame
 import sys
 from player import Player
+from tilemap import TileMap
 
 pygame.init()
 
@@ -9,6 +10,11 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Zelda Style Game")
 
 clock = pygame.time.Clock()
+
+# Load the Map
+map = TileMap('assets/maps/level1.tmx')
+map_img = map.make_map()
+map_rect = map_img.get_rect()
 
 # Create player instance
 player = Player((WIDTH // 2, HEIGHT // 2))
@@ -28,8 +34,12 @@ while running:
 
     all_sprites.update(keys)
 
-    screen.fill((30, 30, 30))  # Dark gray background
+    # Draw everything
+    screen.blit(map_img,map_rect)
     all_sprites.draw(screen)
+
+    #screen.fill((30, 30, 30))  # Dark gray background
+    #all_sprites.draw(screen)
 
     pygame.display.flip()
     clock.tick(60)
