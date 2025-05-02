@@ -12,6 +12,25 @@ class TileMap:
         self.render(self.image)
         self.rect = self.image.get_rect()
 
+        # Wall Detection
+
+        self.walls = []
+        self.load_walls()
+
+    def load_walls(self):
+            """Load wall rects from the 'collision' layer."""
+            for layer in self.tmxdata.visible_layers:
+                if layer.name == 'collision':  # <--- Your collision layer name
+                    for x, y, gid in layer:
+                        if gid:  # If there is a tile (not empty)
+                            wall_rect = pygame.Rect(
+                                x * self.tmxdata.tilewidth,
+                                y * self.tmxdata.tileheight,
+                                self.tmxdata.tilewidth,
+                                self.tmxdata.tileheight
+                            )
+                            self.walls.append(wall_rect)
+
     def render(self, surface):
         """Draw all tiles onto the given surface."""
         for layer in self.tmxdata.visible_layers:

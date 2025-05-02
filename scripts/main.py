@@ -3,6 +3,7 @@ import sys
 from player import Player
 from tilemap import TileMap
 from camera import CameraGroup
+from enemy import Enemy
 
 pygame.init()
 
@@ -15,13 +16,19 @@ clock = pygame.time.Clock()
 # Load the Map
 tilemap = TileMap('assets/maps/map.tmx')
 
-
 # Create player instance
 player = Player((WIDTH // 2, HEIGHT // 2))
 
 # Sprite group to update/draw everything
 camera_group = CameraGroup(tilemap)
 camera_group.add(player)
+
+
+# Create enemy instance
+enemy = Enemy((500, 500), camera_group, tilemap.walls)
+
+
+
 
 # Main loop
 running = True
@@ -32,7 +39,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    camera_group.update()
+    camera_group.update(tilemap.walls)
 
     # Draw everything
     

@@ -58,9 +58,30 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
-    def move(self):
+    def check_collision(self, walls, direction):
+        """Undo movement if colliding with a wall."""
+        for wall in walls:
+            if self.rect.colliderect(wall):
+                if direction == 'horizontal':
+                    if self.direction.x > 0:  # Moving right
+                        self.rect.right = wall.left
+                    if self.direction.x < 0:  # Moving left
+                        self.rect.left = wall.right
+                if direction == 'vertical':
+                    if self.direction.y > 0:  # Moving down
+                        self.rect.bottom = wall.top
+                    if self.direction.y < 0:  # Moving up
+                        self.rect.top = wall.bottom
+
+    def move(self, walls):
+        """Move and check collision."""
+        # Move horizontally
         self.rect.x += self.direction.x * self.speed
+        self.check_collision(walls, 'horizontal')
+
+        # Move vertically
         self.rect.y += self.direction.y * self.speed
+        self.check_collision(walls, 'vertical')
 
     def animate(self):
         animation = self.animations[self.status]
@@ -74,7 +95,7 @@ class Player(pygame.sprite.Sprite):
 
         self.image = animation[int(self.frame_index)]
 
-    def update(self):
+    def update(self, walls):
         self.input()
-        self.move()
+        self.move(walls)
         self.animate()
